@@ -1,0 +1,8 @@
+server:
+  port: 19919
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: users-service

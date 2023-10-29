@@ -1,0 +1,17 @@
+spring:
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Users?currentSchema=users_scheme
+    username: postgres
+    password: 123
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    url: jdbc:postgresql://localhost:5432/Users?currentSchema=users_scheme
+    user: postgres
+    password: 123
+    driver-class-name: org.postgresql.Driver
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    default-schema: users_scheme

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog">
+
+    <changeSet author="autum" id="01-users-table">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="identifier" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="first_name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="varchar(256)"/>
+            <column name="nick_name" type="varchar(256)"/>
+            <column name="msisdn" type="varchar(50)">
+                <constraints unique="true"/>
+            </column>
+            <column name="email" type="varchar(320)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="avatar_url" type="varchar(2000)"/>
+            <column name="city_id" type="bigint">
+                <constraints foreignKeyName="user_city_fk" references="cities(id)"/>
+            </column>
+            <column name="about" type="varchar(1000)"/>
+            <column name="status" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sex" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birthday_at" type="TIMESTAMP"/>
+            <column name="deactivated_at" type="TIMESTAMP"/>
+        </createTable>
+
+        <createIndex tableName="users" indexName="users_identifier_idx">
+            <column name="identifier"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
