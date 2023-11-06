@@ -20,6 +20,7 @@ public class SubscribeController {
     private final SubscribeService subscribeService;
     private final Mapper mapper;
 
+
     @PostMapping("/{identifier}/subscribe")
     @ResponseStatus(OK)
     public void subscribe(@PathVariable("identifier") String targetIdentifier, String identifier) {  //TODO в будущем identifier брать из токена
@@ -34,7 +35,7 @@ public class SubscribeController {
 
     @GetMapping("/{identifier}/subscriber/list")
     @ResponseBody
-    public List<SubscriberResponse> listSubscriber(@PathVariable String identifier, Pageable pageable) {  //пагинация
+    public List<SubscriberResponse> listSubscriber(@PathVariable String identifier, Pageable pageable) {
         var list = subscribeService.getSubscribers(identifier, pageable);
         return list.stream()
                 .map(subscrDto -> mapper.map(subscrDto, SubscriberResponse.class))
@@ -43,7 +44,7 @@ public class SubscribeController {
 
     @GetMapping("/{identifier}/subscription/list")
     @ResponseBody
-    public List<SubscriberResponse> listSubscription(@PathVariable String identifier, Pageable pageable) {   //пагинация
+    public List<SubscriberResponse> listSubscription(@PathVariable String identifier, Pageable pageable) {
         var list = subscribeService.getSubscriptions(identifier, pageable);
         return list.stream()
                 .map(user -> mapper.map(user, SubscriberResponse.class))

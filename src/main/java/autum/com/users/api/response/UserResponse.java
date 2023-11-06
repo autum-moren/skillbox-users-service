@@ -19,9 +19,9 @@ public class UserResponse {
     private String avatarUrl;
     private String about;
     private Long createdAt;
+    private String status;
     private String sex;
     private Long birthdayAt;
-
     private Long subscriptions;
     private Long subscribers;
 

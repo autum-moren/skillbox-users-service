@@ -1,4 +1,4 @@
-package autum.com.users.persistance.user.mapper;
+package autum.com.users.persistance.user.entity.mapper;
 
 import autum.com.users.business.user.dto.UserDto;
 import autum.com.users.infrastructure.mapstruct.MainMapper;
@@ -9,13 +9,12 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
-interface UserDtoMapper extends MainMapper<User, UserDto>, EnumConverter {
+public interface UserMapper extends MainMapper<UserDto, User>, EnumConverter {
 
     @Mappings({
-            @Mapping(target = "sex", source = "sex", qualifiedByName = "IntegerToEnumSex"),
-            @Mapping(target = "status", source = "status", qualifiedByName = "IntegerToEnumStatus"),
+            @Mapping(target = "sex", source = "sex", qualifiedByName = "EnumSexToInteger"),
+            @Mapping(target = "status", source = "status", qualifiedByName = "EnumStatusToInteger"),
     })
     @Override
-    UserDto map(User dto);
-
+    User map(UserDto dto);
 }

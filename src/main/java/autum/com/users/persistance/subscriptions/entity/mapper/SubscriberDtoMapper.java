@@ -1,4 +1,4 @@
-package autum.com.users.persistance.subscriptions.mapper;
+package autum.com.users.persistance.subscriptions.entity.mapper;
 
 import autum.com.users.business.subscriptions.dto.SubscriberDto;
 import autum.com.users.business.user.dto.UserDto;

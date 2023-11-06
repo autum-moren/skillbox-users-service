@@ -1,13 +1,13 @@
 package autum.com.users.business.subscriptions.dto;
 
 import autum.com.users.business.user.dto.UserDto;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
+@Setter
 public class SubscriberDto {
 
     private Long id;
@@ -23,7 +23,6 @@ public class SubscriberDto {
     public enum State {
         SUBSCRIBE,
         UNSUBSCRIBE,
-        DEACTIVATED,
         DELETED;
 
         public static State fromInteger(int status) {
@@ -33,8 +32,6 @@ public class SubscriberDto {
                 case 2:
                     return UNSUBSCRIBE;
                 case 3:
-                    return DEACTIVATED;
-                case 4:
                     return DELETED;
                 default:
                     throw new IllegalArgumentException("Integer " + status + "not processed!");
@@ -47,10 +44,8 @@ public class SubscriberDto {
                     return 1;
                 case UNSUBSCRIBE:
                     return 2;
-                case DEACTIVATED:
-                    return 3;
                 case DELETED:
-                    return 4;
+                    return 3;
                 default:
                     throw new IllegalArgumentException("Status " + state + "not processed!");
             }

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserBlockedException extends RuntimeException {
+public class UserDeactivatedException extends RuntimeException {
 
     private final String firstName;
     private final String lastName;

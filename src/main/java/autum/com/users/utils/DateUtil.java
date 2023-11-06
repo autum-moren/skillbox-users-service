@@ -14,6 +14,13 @@ public class DateUtil {
         return System.currentTimeMillis();
     }
 
+    public static long getTimeNowMillisUTC() {
+        return Instant.ofEpochMilli(getTimeNowMillis())
+                .atZone(ZoneId.of("UTC"))
+                .toInstant()
+                .toEpochMilli();
+    }
+
     public static long getTimeMillisAfterSec(long second) {
         return getTimeNowMillis() + secondToMillis(second);
     }

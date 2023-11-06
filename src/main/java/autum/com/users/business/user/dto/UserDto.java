@@ -1,13 +1,17 @@
 package autum.com.users.business.user.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import autum.com.users.business.city.dto.CityDto;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static autum.com.users.utils.DateUtil.getLocalDateTimeUTCNow;
+import static autum.com.users.utils.Generator.generateIdentifier;
+
 @Getter
-@Builder
+@Setter
+@NoArgsConstructor
 public class UserDto {
 
     private Long id;
@@ -29,6 +33,19 @@ public class UserDto {
 
     private Long subscriptions;
     private Long subscribers;
+
+    public UserDto(CreateUserDto dto) {
+        this.identifier = generateIdentifier();
+        this.firstName = dto.getFirstName();
+        this.lastName = dto.getLastName();
+        this.middleName = dto.getMiddleName();
+        this.msisdn = dto.getMsisdn();
+        this.email = dto.getEmail();
+        this.createdAt = getLocalDateTimeUTCNow();
+        this.sex = dto.getSex();
+        this.status = Status.ACTIVE;
+        this.birthdayAt = dto.getBirthdayAt();
+    }
 
     @Getter
     @Builder

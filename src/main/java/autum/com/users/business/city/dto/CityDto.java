@@ -1,4 +1,4 @@
-package autum.com.users.business.user.dto;
+package autum.com.users.business.city.dto;
 
 import lombok.Builder;
 import lombok.Getter;
