@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  db-postgres:
+    container_name: POSTGRES
+    image: postgres:16.0
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: Users
+      POSTGRES_USER: postgres
+    volumes:
+      - ./postgresql-docker-init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  pgAdmin:
+    container_name: PG-ADMIN
+    image: dpage/pgadmin4:2023-09-20-1
+    ports:
+      - 5080:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=email@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=123
+    volumes:
+      - pgadmin_data:/home/rundeck/server/data
+
+  user-service:
+    container_name: USER-SERVICE
+    build:
+      dockerfile: Dockerfile
+    depends_on:
+      - db-postgres
+    ports:
+      - 19919:19919
+    environment:
+      - spring.profiles.active=dev
+      - spring.datasource.url=jdbc:postgresql://host.docker.internal:5433/Users?currentSchema=users_scheme
+      - spring.datasource.username=postgres
+      - spring.datasource.password=123
+      - spring.liquibase.url=jdbc:postgresql://host.docker.internal:5433/Users?currentSchema=users_scheme
+      - spring.liquibase.user=postgres
+      - spring.liquibase.password=123
+      - spring.liquibase.default-schema=users_scheme
+volumes:
+  pgadmin_data:

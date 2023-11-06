@@ -58,9 +58,6 @@ public class UserServiceImpl implements UserService {
         if (dto.getAbout() != null) {
             user.setAbout(dto.getAbout());
         }
-        if (dto.getMsisdn() != null) {
-            user.setMsisdn(dto.getMsisdn());
-        }
         if (dto.getBirthdayAt() != null) {
             user.setBirthdayAt(dto.getBirthdayAt());
         }

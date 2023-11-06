@@ -12,8 +12,6 @@ public class UpdateUserDto {
     private String firstName;
     private String lastName;
     private String middleName;
-    private String msisdn;
-//    private String cityIdentifier;
     private String about;
     private UserDto.Sex sex;
     private LocalDateTime birthdayAt;
