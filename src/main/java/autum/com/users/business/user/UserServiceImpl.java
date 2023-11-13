@@ -3,6 +3,7 @@ package autum.com.users.business.user;
 import autum.com.users.business.user.dto.CreateUserDto;
 import autum.com.users.business.user.dto.UpdateUserDto;
 import autum.com.users.business.user.dto.UserDto;
+import autum.com.users.business.user.dto.UserListDto;
 import autum.com.users.business.user.exception.UserAlreadyExistsException;
 import autum.com.users.business.user.exception.UserBlockedException;
 import autum.com.users.business.user.exception.UserDeactivatedException;
@@ -10,6 +11,7 @@ import autum.com.users.business.user.exception.UserNotFoundException;
 import autum.com.users.business.user.persistance.UserRepository;
 import autum.com.users.utils.DateUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -30,6 +32,11 @@ public class UserServiceImpl implements UserService {
         var user = userRepo.getUserWithSubsCount(identifier);
         checkUser(user);
         return user;
+    }
+
+    @Override
+    public UserListDto getUserListByName(String name, Pageable pageable) {
+        return userRepo.getUserListByName(name, pageable);
     }
 
     @Override

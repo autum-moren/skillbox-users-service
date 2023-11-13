@@ -2,13 +2,16 @@ package autum.com.users.api;
 
 import autum.com.users.api.request.CreateUserRequest;
 import autum.com.users.api.request.UpdateUserRequest;
+import autum.com.users.api.response.UserListResponse;
 import autum.com.users.api.response.UserResponse;
 import autum.com.users.business.user.UserService;
 import autum.com.users.business.user.dto.CreateUserDto;
 import autum.com.users.business.user.dto.UpdateUserDto;
 import autum.com.users.infrastructure.mapstruct.Mapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -50,5 +53,11 @@ public class UserController {
     @ResponseStatus(code = OK)
     public void delete(@PathVariable String identifier) {
         userService.deactivateUser(identifier);
+    }
+
+    @GetMapping("/list")
+    public UserListResponse getUserList(String name, Pageable pageable) {
+        var users = userService.getUserListByName(name, pageable);
+        return mapper.map(users, UserListResponse.class);
     }
 }

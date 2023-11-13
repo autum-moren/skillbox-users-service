@@ -1,11 +1,13 @@
 package autum.com.users.persistance.user;
 
 import autum.com.users.business.user.dto.UserDto;
+import autum.com.users.business.user.dto.UserListDto;
 import autum.com.users.business.user.persistance.UserRepository;
 import autum.com.users.infrastructure.mapstruct.Mapper;
 import autum.com.users.persistance.user.entity.User;
 import autum.com.users.persistance.user.repodb.UserRepositoryDb;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -33,14 +35,35 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public UserListDto getUserListByName(String name, Pageable pageable) {
+        var pages = repositoryDb.findByName(preparationFullTextSearch(name), pageable);
+        return UserListDto.builder()
+                .totalCount(pages.getTotalElements())
+                .users(pages.get()
+                        .map(user -> mapper.map(user, UserDto.class))
+                        .collect(Collectors.toList())
+                )
+                .build();
+    }
+
+    private String preparationFullTextSearch(String text) {
+        StringBuilder result = new StringBuilder();
+        for (String str : text.split("[ ,;._]")) {
+            result.append("'").append(str.replace("'", "\\'")).append("':*&");
+        }
+        return result.toString().replaceAll("&$", "");
+    }
+
+    @Override
     public boolean existsByEmail(String email) {
         return repositoryDb.existsByEmail(email);
     }
 
     @Override
-    public void saveUser(UserDto dto) {
+    public UserDto saveUser(UserDto dto) {
         var user = mapper.map(dto, User.class);
-        repositoryDb.save(user);
+        var savedUser = repositoryDb.save(user);
+        return mapper.map(savedUser, UserDto.class);
     }
 
     @Override

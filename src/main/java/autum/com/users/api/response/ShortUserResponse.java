@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SubscriberResponse {
+public class ShortUserResponse {
 
     private String identifier;
     private String firstName;

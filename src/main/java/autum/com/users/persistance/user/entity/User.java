@@ -38,6 +38,7 @@ public class User {
     private String about;
     private LocalDateTime createdAt;
     private LocalDateTime deactivatedAt;
+    //TODO blockedAt?
     private Integer sex;
     private Integer status;
     private LocalDateTime birthdayAt;

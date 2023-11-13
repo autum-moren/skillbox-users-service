@@ -4,9 +4,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class DateUtil {
 
@@ -19,22 +16,6 @@ public class DateUtil {
                 .atZone(ZoneId.of("UTC"))
                 .toInstant()
                 .toEpochMilli();
-    }
-
-    public static long getTimeMillisAfterSec(long second) {
-        return getTimeNowMillis() + secondToMillis(second);
-    }
-
-    public static long getRemainingTimeMillis(long millis) {
-        return millis - getTimeNowMillis();
-    }
-
-    public static long millisToSecond(long millis) {
-        return TimeUnit.MILLISECONDS.toSeconds(millis);
-    }
-
-    public static long secondToMillis(long second) {
-        return TimeUnit.SECONDS.toMillis(second);
     }
 
     public static LocalDateTime getLocalDateTimeUTCNow() {

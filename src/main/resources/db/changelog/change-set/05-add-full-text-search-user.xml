@@ -1,0 +1,16 @@
+<databaseChangeLog
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog">
+
+    <changeSet author="autum" id="05-add-full-text-search-user.xml">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <dbms  type="h2"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE INDEX user_name_tsv_index ON users
+                USING GIN((to_tsvector('simple', first_name) || to_tsvector('simple', last_name)));
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -24,6 +24,7 @@ public class CityRepositoryImpl implements CityRepository {
         return mapper.map(city, CityDto.class);
     }
 
+    //TODO все же totalCount нужно отдать на UI
     @Override
     public List<CityDto> findCityByName(String name, Pageable pageable) {
         return cityRepositoryDb.findAllByNameLike(name, pageable).stream()

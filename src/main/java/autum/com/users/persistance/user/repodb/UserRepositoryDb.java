@@ -1,6 +1,8 @@
 package autum.com.users.persistance.user.repodb;
 
 import autum.com.users.persistance.user.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,12 @@ public interface UserRepositoryDb extends CrudRepository<User, Long> {
             "WHERE u.identifier = :identifier AND u.status = 1", nativeQuery = true)
     User findByIdentifierWithSubscrCount(String identifier);
 
+    @Query(value = "SELECT * FROM users WHERE " +
+            "to_tsvector('simple', first_name) || to_tsvector('simple', last_name) @@ to_tsquery('simple', :name)",
+            nativeQuery = true)
+    Page<User> findByName(String name, Pageable pageable);
+
+    //TODO email может повторяться в статусе DELETED!!!
     boolean existsByEmail(String email);
 
     User findByIdentifier(String identifier);

@@ -9,8 +9,7 @@ import java.util.List;
 import static autum.com.users.utils.DateUtil.getLocalDateTimeUTCNow;
 import static autum.com.users.utils.Generator.generateIdentifier;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class UserDto {
 

@@ -1,10 +1,8 @@
 package autum.com.users.business.city.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-@Builder
+@Data
 public class CityDto {
 
     private Long id;

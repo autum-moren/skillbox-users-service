@@ -1,13 +1,13 @@
 package autum.com.users.business.subscriptions.dto;
 
 import autum.com.users.business.user.dto.UserDto;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 public class SubscriberDto {
 
     private Long id;

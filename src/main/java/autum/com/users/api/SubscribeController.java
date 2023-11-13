@@ -1,6 +1,6 @@
 package autum.com.users.api;
 
-import autum.com.users.api.response.SubscriberResponse;
+import autum.com.users.api.response.ShortUserResponse;
 import autum.com.users.business.subscriptions.SubscribeService;
 import autum.com.users.infrastructure.mapstruct.Mapper;
 import lombok.AllArgsConstructor;
@@ -35,19 +35,19 @@ public class SubscribeController {
 
     @GetMapping("/{identifier}/subscriber/list")
     @ResponseBody
-    public List<SubscriberResponse> listSubscriber(@PathVariable String identifier, Pageable pageable) {
+    public List<ShortUserResponse> listSubscriber(@PathVariable String identifier, Pageable pageable) {
         var list = subscribeService.getSubscribers(identifier, pageable);
         return list.stream()
-                .map(subscrDto -> mapper.map(subscrDto, SubscriberResponse.class))
+                .map(subscrDto -> mapper.map(subscrDto, ShortUserResponse.class))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{identifier}/subscription/list")
     @ResponseBody
-    public List<SubscriberResponse> listSubscription(@PathVariable String identifier, Pageable pageable) {
+    public List<ShortUserResponse> listSubscription(@PathVariable String identifier, Pageable pageable) {
         var list = subscribeService.getSubscriptions(identifier, pageable);
         return list.stream()
-                .map(user -> mapper.map(user, SubscriberResponse.class))
+                .map(user -> mapper.map(user, ShortUserResponse.class))
                 .collect(Collectors.toList());
     }
 }
