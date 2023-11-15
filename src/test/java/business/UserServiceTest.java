@@ -12,7 +12,7 @@ import autum.com.users.business.user.exception.UserBlockedException;
 import autum.com.users.business.user.exception.UserDeactivatedException;
 import autum.com.users.business.user.exception.UserNotFoundException;
 import autum.com.users.business.user.persistance.UserRepository;
-import autum.com.users.persistance.user.UserRepositoryImpl;
+import autum.com.users.persistence.user.UserRepositoryImpl;
 import autum.com.users.utils.DateUtil;
 import autum.com.users.utils.Generator;
 import mockit.Mock;
