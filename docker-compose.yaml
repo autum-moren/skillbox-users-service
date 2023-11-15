@@ -5,11 +5,11 @@ services:
     container_name: POSTGRES
     image: postgres:16.0
     ports:
-      - 5433:5432
+      - ${POSTGRES_PORT}:5432
     environment:
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: Users
-      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
     volumes:
       - ./postgresql-docker-init.sql:/docker-entrypoint-initdb.d/init.sql
 
@@ -17,10 +17,10 @@ services:
     container_name: PG-ADMIN
     image: dpage/pgadmin4:2023-09-20-1
     ports:
-      - 5080:80
+      - ${PGADMIN_PORT}:80
     environment:
-      - PGADMIN_DEFAULT_EMAIL=email@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=123
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     volumes:
       - pgadmin_data:/home/rundeck/server/data
 
@@ -33,13 +33,13 @@ services:
     ports:
       - 19919:19919
     environment:
-      - spring.profiles.active=dev
-      - spring.datasource.url=jdbc:postgresql://host.docker.internal:5433/Users?currentSchema=users_scheme
-      - spring.datasource.username=postgres
-      - spring.datasource.password=123
-      - spring.liquibase.url=jdbc:postgresql://host.docker.internal:5433/Users?currentSchema=users_scheme
-      - spring.liquibase.user=postgres
-      - spring.liquibase.password=123
-      - spring.liquibase.default-schema=users_scheme
+      - spring.profiles.active=${SPRING_PROFILE}
+      - spring.datasource.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?currentSchema=${POSTGRES_SCHEMA}
+      - spring.datasource.username=${POSTGRES_USER}
+      - spring.datasource.password=${POSTGRES_PASSWORD}
+      - spring.liquibase.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?currentSchema=${POSTGRES_SCHEMA}
+      - spring.liquibase.user=${POSTGRES_USER}
+      - spring.liquibase.password=${POSTGRES_PASSWORD}
+      - spring.liquibase.default-schema=${POSTGRES_SCHEMA}
 volumes:
   pgadmin_data:
