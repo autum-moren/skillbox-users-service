@@ -1,15 +1,16 @@
 package autum.com.users.api.request;
 
-import autum.com.users.business.user.dto.UserDto;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class UpdateUserRequest {
 
     private String firstName;
     private String lastName;
     private String middleName;
     private String about;
-    private UserDto.Sex sex;
+    private String sex;
     private Long birthdayAt;
 }

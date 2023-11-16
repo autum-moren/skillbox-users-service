@@ -55,6 +55,8 @@ public class UserController {
         userService.deactivateUser(identifier);
     }
 
+    //TODO запрос на откат временного удаления
+
     @GetMapping("/list")
     public UserListResponse getUserList(String name, Pageable pageable) {
         var users = userService.getUserListByName(name, pageable);

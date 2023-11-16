@@ -47,7 +47,7 @@ public class SubscribeController {
     public List<ShortUserResponse> listSubscription(@PathVariable String identifier, Pageable pageable) {
         var list = subscribeService.getSubscriptions(identifier, pageable);
         return list.stream()
-                .map(user -> mapper.map(user, ShortUserResponse.class))
+                .map(subscrDto -> mapper.map(subscrDto, ShortUserResponse.class))
                 .collect(Collectors.toList());
     }
 }
