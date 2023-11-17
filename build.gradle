@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.17'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "nebula.integtest" version "9.6.3"
 }
 
 group = 'autum.com'
@@ -31,11 +32,11 @@ dependencies {
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
-
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation "org.jmockit:jmockit:$jmockitVersion"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    integTestImplementation 'org.testcontainers:postgresql:1.17.6'
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.liquibase:liquibase-core'
 }
@@ -47,6 +48,14 @@ test {
 tasks.named('test') {
     useJUnitPlatform()
     doFirst {
+        jvmArgs "-Dspring.profiles.active=test"
         jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
     }
+}
+
+tasks.named('integrationTest') {
+    doFirst {
+        jvmArgs "-Dspring.profiles.active=integ"
+    }
+    useJUnitPlatform()
 }
