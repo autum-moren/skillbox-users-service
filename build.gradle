@@ -3,19 +3,21 @@ plugins {
     id 'org.springframework.boot' version '2.7.17'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id "nebula.integtest" version "9.6.3"
+    id "checkstyle"
     id "org.sonarqube" version "4.4.1.3373"
 //    id "jacoco"
 }
 
 group = 'autum.com'
 version = '1.0.0-SNAPSHOT'
+sourceCompatibility = '11'
 
 def jmockitVersion = '1.49'
 def mapstructVersion = '1.5.3.Final'
 
-java {
-    sourceCompatibility = '11'
-}
+//java {
+//    sourceCompatibility = '11'
+//}
 
 configurations {
     compileOnly {
@@ -52,6 +54,11 @@ test {
 //    }
 //}
 //test.finalizedBy jacocoTestReport
+
+checkstyle {
+    toolVersion = '10.3.3'
+    maxWarnings = 1000
+}
 
 sonarqube {
     properties {
