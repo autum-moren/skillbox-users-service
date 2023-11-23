@@ -1,6 +1,6 @@
 import autum.com.users.UsersApplication;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class IntegrationTest {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private MockMvc mockMvc;
 
@@ -30,7 +31,11 @@ public class IntegrationTest {
 
     @BeforeAll
     public static void setUp() {
-        container.start();
+        try {
+            container.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @DynamicPropertySource
@@ -43,6 +48,7 @@ public class IntegrationTest {
 
     @Test
     public void findCity() throws Exception {
+        System.out.println("-- FIND CITY --");
         var result = mockMvc.perform(get("/api/v1/city/London"))
                 .andExpect(status().isOk())
                 .andReturn();

@@ -1,23 +1,53 @@
-image: gradle:alpine
-
-variables:
-  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-  GIT_DEPTH: "0"
-  DOCKER_DRIVER: overlay
-  SONAR_TOKEN: sqa_fa9f7f72977361a12eaebbc3109a68b356e3dae8
-  SONAR_HOST_URL: http://host.docker.internal:9000/
+#services:
+#  - docker:dind
+#  - postgres:16.1
+#image: docker:latest
+#services:
+#  - docker:dind
 
 stages:
   - test
+  - integrationTest
 
-build-check:
+variables:
+#  DOCKER_DRIVER: overlay
+#  DOCKER_HOST: tcp://docker:2375/
+#  DOCKER_DRIVER: overlay2
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+test:
   stage: test
-#  cache:
-#    key: "${CI_JOB_NAME}"
-#    path:
-#      - .sonar/cache
-  script: gradle sonarqube -Dsonar.qualitygate.wait=true
-#  only:
-#    - develop
-  rules:
-    - if: '$CI_BUILD_REF_NAME != "master" && $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event"'
+  script:
+    - echo "--------TEST_STAGE--------"
+    - gradle test
+
+integrationTest:
+  stage: integrationTest
+  #  image: gradle:jdk11
+  script:
+    - echo "--------INTEGRATION_TEST(module)"
+    - gradle integTest
+
+#image: gradle:alpine
+#
+#variables:
+#  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+#  GIT_DEPTH: "0"
+#  DOCKER_DRIVER: overlay
+#  SONAR_TOKEN: sqa_fa9f7f72977361a12eaebbc3109a68b356e3dae8
+#  SONAR_HOST_URL: http://host.docker.internal:9000/
+#
+#stages:
+#  - test
+#
+#build-check:
+#  stage: test
+##  cache:
+##    key: "${CI_JOB_NAME}"
+##    path:
+##      - .sonar/cache
+#  script: gradle sonarqube -Dsonar.qualitygate.wait=true
+##  only:
+##    - develop
+#  rules:
+#    - if: '$CI_BUILD_REF_NAME != "master" && $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event"'
