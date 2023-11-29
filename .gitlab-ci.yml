@@ -8,6 +8,8 @@
 stages:
   - test
   - integrationTest
+  - sonarqube-check
+  - deploy
 
 variables:
 #  DOCKER_DRIVER: overlay
@@ -18,28 +20,36 @@ variables:
 test:
   stage: test
   script:
-    - echo "--------TEST_STAGE--------"
     - gradle test
 
 integrationTest:
   stage: integrationTest
   #  image: gradle:jdk11
   script:
-    - echo "--------INTEGRATION_TEST(module)"
     - gradle integTest
 
-#image: gradle:alpine
-#
-#variables:
-#  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-#  GIT_DEPTH: "0"
-#  DOCKER_DRIVER: overlay
-#  SONAR_TOKEN: sqa_fa9f7f72977361a12eaebbc3109a68b356e3dae8
-#  SONAR_HOST_URL: http://host.docker.internal:9000/
-#
-#stages:
-#  - test
-#
+#build:
+#  stage: build
+#  script:
+#    - gradle build --exclude-task test --exclude-task integTest
+
+deploy:
+  stage: deploy
+  script:
+    - gradle build --exclude-task test --exclude-task integTest
+    - echo ${CI_ARTIFACTORY_PASSWORD} | docker login -u autum --password-stdin registry.gitlab.com/skillbox-microservices1/users-service
+    # Загрузка Docker-образа в Container Registry
+    - docker build -t registry.gitlab.com/skillbox-microservices1/users-service/users-service:1.0.0 .
+    - docker push registry.gitlab.com/skillbox-microservices1/users-service/users-service:1.0.0
+
+#publish:
+#  stage: deploy
+#  script:
+#    - docker login registry.gitlab.com
+#    - docker build -t registry.gitlab.com/skillbox-microservices1/users-service
+#    - docker push registry.gitlab.com/skillbox-microservices1/users-service
+
+
 #build-check:
 #  stage: test
 ##  cache:
@@ -47,7 +57,5 @@ integrationTest:
 ##    path:
 ##      - .sonar/cache
 #  script: gradle sonarqube -Dsonar.qualitygate.wait=true
-##  only:
-##    - develop
 #  rules:
 #    - if: '$CI_BUILD_REF_NAME != "master" && $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event"'
