@@ -33,7 +33,6 @@ public class UserController {
 
     //TODO личная информация, должен быть вариант общего назначения
     @GetMapping(value = "/{identifier}")
-    @ResponseBody
     public UserResponse get(@PathVariable String identifier) {
         var dto = userService.getUser(identifier);
         return mapper.map(dto, UserResponse.class);
@@ -57,7 +56,7 @@ public class UserController {
 
     //TODO запрос на откат временного удаления
 
-    @GetMapping("/list")
+    @GetMapping(value = "/list")
     public UserListResponse getUserList(String name, Pageable pageable) {
         var users = userService.getUserListByName(name, pageable);
         return mapper.map(users, UserListResponse.class);

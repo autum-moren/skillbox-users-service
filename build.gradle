@@ -18,10 +18,22 @@ java {
     sourceCompatibility = '11'
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+sourceSets {
+    smokeTest {
+        java {
+            srcDirs = ['src/smokeTest/java']
+        }
+        resources {
+            srcDirs = ['src/smokeTest/resources']
+        }
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
     }
+}
+
+configurations {
+    smokeTestImplementation.extendsFrom testImplementation
+    smokeTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 repositories {
@@ -40,7 +52,9 @@ dependencies {
     testImplementation "org.jmockit:jmockit:$jmockitVersion"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
-    integTestImplementation 'org.testcontainers:postgresql:1.17.6'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'org.testcontainers:postgresql:1.17.6'
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.liquibase:liquibase-core'
 }
@@ -48,6 +62,7 @@ dependencies {
 test {
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
 }
+
 //jacocoTestReport {
 //    reports {
 //        xml.enabled true
@@ -71,13 +86,25 @@ tasks.named('test') {
     useJUnitPlatform()
     doFirst {
         jvmArgs "-Dspring.profiles.active=test"
-        jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
     }
 }
 //tasks.named('sonarqube').configure {dependsOn test}
+
 tasks.named('integrationTest') {
     doFirst {
         jvmArgs "-Dspring.profiles.active=integ"
     }
     useJUnitPlatform()
+}
+
+task smokeTest(type: Test) {
+    description = 'Runs smoke tests'
+    group = 'verification'
+
+    useJUnitPlatform()
+
+    systemProperty "spring.profiles.active", "smokeTest"
+
+    testClassesDirs = sourceSets.smokeTest.output.classesDirs
+    classpath = sourceSets.smokeTest.runtimeClasspath
 }

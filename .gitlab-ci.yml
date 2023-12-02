@@ -1,20 +1,13 @@
-#services:
-#  - docker:dind
-#  - postgres:16.1
-#image: docker:latest
-#services:
-#  - docker:dind
-
 stages:
   - test
   - integrationTest
+  - smokeTest
+  - regressTest
+  - loadTest
   - sonarqube-check
   - deploy
 
 variables:
-#  DOCKER_DRIVER: overlay
-#  DOCKER_HOST: tcp://docker:2375/
-#  DOCKER_DRIVER: overlay2
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 test:
@@ -24,31 +17,31 @@ test:
 
 integrationTest:
   stage: integrationTest
-  #  image: gradle:jdk11
   script:
     - gradle integTest
 
-#build:
-#  stage: build
+smokeTest:
+  stage: smokeTest
+  script:
+    - gradle smokeTest
+#
+#regressTest:
+#  stage: regressTest
 #  script:
-#    - gradle build --exclude-task test --exclude-task integTest
+#    - gradle regressTest
+#
+#loadTest:
+#  stage: loadTest
+#  script:
+#    - gradle loadTest
 
 deploy:
   stage: deploy
   script:
     - gradle build --exclude-task test --exclude-task integTest
     - echo ${CI_ARTIFACTORY_PASSWORD} | docker login -u autum --password-stdin registry.gitlab.com/skillbox-microservices1/users-service
-    # Загрузка Docker-образа в Container Registry
-    - docker build -t registry.gitlab.com/skillbox-microservices1/users-service/users-service:1.0.0 .
-    - docker push registry.gitlab.com/skillbox-microservices1/users-service/users-service:1.0.0
-
-#publish:
-#  stage: deploy
-#  script:
-#    - docker login registry.gitlab.com
-#    - docker build -t registry.gitlab.com/skillbox-microservices1/users-service
-#    - docker push registry.gitlab.com/skillbox-microservices1/users-service
-
+    - docker build -t registry.gitlab.com/skillbox-microservices1/users-service/users-service:1.0.0-SNAPSHOT .
+    - docker push registry.gitlab.com/skillbox-microservices1/users-service/users-service:1.0.0-SNAPSHOT
 
 #build-check:
 #  stage: test

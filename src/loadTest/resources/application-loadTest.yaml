@@ -1,0 +1,8 @@
+spring:
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    enabled: true
