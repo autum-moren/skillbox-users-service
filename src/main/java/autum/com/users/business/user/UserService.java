@@ -11,6 +11,8 @@ import java.util.Set;
 
 public interface UserService {
 
+    UserDto getUserWithCount(String identifier);
+
     UserDto getUser(String identifier);
 
     UserListDto getUserListByName(String name, Pageable pageable);

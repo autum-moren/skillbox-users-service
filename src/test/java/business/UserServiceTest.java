@@ -74,7 +74,7 @@ public class UserServiceTest {
         Mockito.when(userRepo.getUserWithSubsCount(userIdentifier))
                 .thenReturn(userDto);
 
-        var result = userService.getUser(userIdentifier);
+        var result = userService.getUserWithCount(userIdentifier);
         assertEquals(userDto, result);
 
         Mockito.verify(userRepo, Mockito.times(1))
@@ -124,7 +124,7 @@ public class UserServiceTest {
         Mockito.when(userRepo.getUserWithSubsCount(userIdentifier))
                 .thenReturn(userDto);
 
-        assertThrows(UserBlockedException.class, () -> userService.getUser(userIdentifier));
+        assertThrows(UserBlockedException.class, () -> userService.getUserWithCount(userIdentifier));
 
         Mockito.verify(userRepo, Mockito.times(1))
                 .getUserWithSubsCount(userIdentifier);
@@ -174,7 +174,7 @@ public class UserServiceTest {
         Mockito.when(userRepo.getUserWithSubsCount(userIdentifier))
                 .thenReturn(userDto);
 
-        assertThrows(UserDeactivatedException.class, () -> userService.getUser(userIdentifier));
+        assertThrows(UserDeactivatedException.class, () -> userService.getUserWithCount(userIdentifier));
 
         Mockito.verify(userRepo, Mockito.times(1))
                 .getUserWithSubsCount(userIdentifier);
@@ -189,7 +189,7 @@ public class UserServiceTest {
         Mockito.when(userRepo.getUserWithSubsCount(userIdentifier))
                 .thenReturn(null);
 
-        assertThrows(UserNotFoundException.class, () -> userService.getUser(userIdentifier));
+        assertThrows(UserNotFoundException.class, () -> userService.getUserWithCount(userIdentifier));
 
         Mockito.verify(userRepo, Mockito.times(1))
                 .getUserWithSubsCount(userIdentifier);

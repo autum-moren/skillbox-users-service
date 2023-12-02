@@ -24,11 +24,11 @@ smokeTest:
   stage: smokeTest
   script:
     - gradle smokeTest
-#
-#regressTest:
-#  stage: regressTest
-#  script:
-#    - gradle regressTest
+
+regressTest:
+  stage: regressTest
+  script:
+    - gradle regressTest
 #
 #loadTest:
 #  stage: loadTest

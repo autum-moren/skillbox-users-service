@@ -29,11 +29,23 @@ sourceSets {
         compileClasspath += sourceSets.main.output
         runtimeClasspath += sourceSets.main.output
     }
+    regressTest {
+        java {
+            srcDirs = ['src/regressTest/java']
+        }
+        resources {
+            srcDirs = ['src/regressTest/resources']
+        }
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
 }
 
 configurations {
     smokeTestImplementation.extendsFrom testImplementation
     smokeTestRuntimeOnly.extendsFrom testRuntimeOnly
+    regressTestImplementation.extendsFrom testImplementation
+    regressTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 repositories {
@@ -107,4 +119,16 @@ task smokeTest(type: Test) {
 
     testClassesDirs = sourceSets.smokeTest.output.classesDirs
     classpath = sourceSets.smokeTest.runtimeClasspath
+}
+
+task regressTest(type: Test) {
+    description = 'Runs regress tests'
+    group = 'verification'
+
+    useJUnitPlatform()
+
+    systemProperty "spring.profiles.active", "regressTest"
+
+    testClassesDirs = sourceSets.regressTest.output.classesDirs
+    classpath = sourceSets.regressTest.runtimeClasspath
 }

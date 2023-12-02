@@ -28,8 +28,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
 
     @Override
-    public UserDto getUser(String identifier) {
+    public UserDto getUserWithCount(String identifier) {
         var user = userRepo.getUserWithSubsCount(identifier);
+        checkUser(user);
+        return user;
+    }
+
+    @Override
+    public UserDto getUser(String identifier) {
+        var user = userRepo.getUser(identifier);
         checkUser(user);
         return user;
     }

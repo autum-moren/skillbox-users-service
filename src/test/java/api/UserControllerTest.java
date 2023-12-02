@@ -109,7 +109,7 @@ public class UserControllerTest {
         userDto.setSubscriptions(100L);
         userDto.setSubscribers(99L);
 
-        Mockito.when(userService.getUser(identifier))
+        Mockito.when(userService.getUserWithCount(identifier))
                 .thenReturn(userDto);
 
         var cityResponse = new UserResponse.City();
@@ -149,7 +149,7 @@ public class UserControllerTest {
         assertEquals(userResponse, result);
 
         Mockito.verify(userService, Mockito.times(1))
-                .getUser(identifier);
+                .getUserWithCount(identifier);
         Mockito.verify(mapper, Mockito.times(1))
                 .map(userDto, UserResponse.class);
     }
@@ -272,7 +272,7 @@ public class UserControllerTest {
                 .thenReturn(userListResponse);
 
         var userController = new UserController(userService, mapper);
-        var result = userController.getUserList(name, pageable);
+        var result = userController.search(name, pageable);
         assertEquals(userListResponse, result);
 
         Mockito.verify(userService, Mockito.times(1))

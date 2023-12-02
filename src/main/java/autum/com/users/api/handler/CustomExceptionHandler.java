@@ -1,6 +1,7 @@
 package autum.com.users.api.handler;
 
 import autum.com.users.api.error.ErrorResponse;
+import autum.com.users.business.user.exception.UserDeactivatedException;
 import autum.com.users.business.user.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 import java.util.Locale;
+import java.util.Map;
 
 import static autum.com.users.api.error.ErrorCode.INTERNAL_ERROR;
 import static autum.com.users.api.error.ErrorCode.getErrorCode;
@@ -29,6 +31,16 @@ public class CustomExceptionHandler {
         var code = getErrorCode(e);
         var msg = messageSource.getMessage(code.name(), null, locale);
         return new ErrorResponse(code, msg, null);
+    }
+
+    //TODO можно вместо ошибки вернуть недозаполненного пользователя со статусом deactivated
+    @ExceptionHandler(UserDeactivatedException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST) //TODO можно и 200 вернуть
+    public ErrorResponse deactivateUser(UserDeactivatedException e, Locale locale) {
+        var code = getErrorCode(e);
+        var msg = messageSource.getMessage(code.name(), null, locale);
+        return new ErrorResponse(code, msg, Map.of("firstName", e.getFirstName(), "lastName", e.getLastName()));
     }
 
     @ExceptionHandler(Throwable.class)

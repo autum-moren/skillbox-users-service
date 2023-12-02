@@ -42,6 +42,7 @@ public class SubscribeController {
                 .collect(Collectors.toList());
     }
 
+    //TODO заменть ответ на свой object
     @GetMapping("/{identifier}/subscription/list")
     @ResponseBody
     public List<ShortUserResponse> listSubscription(@PathVariable String identifier, Pageable pageable) {
