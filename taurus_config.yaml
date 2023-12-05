@@ -1,0 +1,33 @@
+execution:
+  concurrency: 1
+#  ramp-up: 1m
+#  iterations: 600
+  throughput: 10
+  hold-for: 1m
+  scenario: create_user
+
+scenarios:
+  create_user:
+    data-sources:
+      - path: 'performance.csv'
+        delimiter: ','
+        variable-names: firstName,lastName,middleName,phone
+    requests:
+      - url: http://localhost:19919/api/v1/users/create
+        method: POST
+        headers:
+          Content-Type: application/json
+          Accept: application/json
+        body: '{
+            "firstName": "${firstName}",
+            "lastName": "${lastName}",
+            "middleName": "${middleName}",
+            "email": "${firstName}.${lastName}.${phone}@gmail.com",
+            "msisdn": "7${phone}",
+            "birthdayAt": "3458694323421",
+            "sex": "UNKNOWN"
+          }'
+
+reporting:
+  - final-stats
+  - console

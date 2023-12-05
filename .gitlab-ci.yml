@@ -3,7 +3,7 @@ stages:
   - integrationTest
   - smokeTest
   - regressTest
-  - loadTest
+  - performanceTest
   - sonarqube-check
   - deploy
 
@@ -29,16 +29,23 @@ regressTest:
   stage: regressTest
   script:
     - gradle regressTest
-#
-#loadTest:
-#  stage: loadTest
-#  script:
-#    - gradle loadTest
+
+performance_test:
+  stage: performanceTest
+  script:
+    - bzt taurus_config.yaml
+  before_script:
+    - gradle bootJar
+    - docker compose up -d
+    - sleep 10
+  after_script:
+    - docker compose down --volumes
+  when: manual
 
 deploy:
   stage: deploy
   script:
-    - gradle build --exclude-task test --exclude-task integTest
+    - gradle bootJar
     - echo ${CI_ARTIFACTORY_PASSWORD} | docker login -u autum --password-stdin registry.gitlab.com/skillbox-microservices1/users-service
     - docker build -t registry.gitlab.com/skillbox-microservices1/users-service/users-service:1.0.0-SNAPSHOT .
     - docker push registry.gitlab.com/skillbox-microservices1/users-service/users-service:1.0.0-SNAPSHOT

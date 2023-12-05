@@ -6,3 +6,11 @@ spring:
     active: dev
   application:
     name: users-service
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
